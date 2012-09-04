@@ -70,6 +70,12 @@ define apparmor::profile (
     notify => Exec["aa-enable-${name}"],
   }
 
+  # Remove the "disable" symlink if any
+  file { "${apparmor_d}/disable/${name}":
+    ensure => absent,
+    notify => Exec["aa-enable-${name}"],
+  }
+
   if ($local_source == true) {
     $real_local_source = "${default_base}/local/${name}"
   } elsif ($local_source == false) {
