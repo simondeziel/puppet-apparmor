@@ -4,7 +4,9 @@
 # Install the Apparmor package and make sure /etc/apparmor.d/local exists.
 #
 # Note that custom Ubuntu profiles are availables at:
-# https://github.com/simondeziel/aa-profiles
+#   https://github.com/simondeziel/aa-profiles
+# and should be copied/cloned to the "files" directory unless you want to
+# use your own custom modules in that same directory.
 #
 # === Parameters
 #
