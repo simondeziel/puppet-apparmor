@@ -1,0 +1,2 @@
+# To have some Ubuntu specific Apparmor profiles:
+# git clone https://github.com/simondeziel/aa-profiles
