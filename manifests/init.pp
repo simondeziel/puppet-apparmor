@@ -32,6 +32,10 @@ class apparmor {
     ensure => present,
   }
 
+  service { 'apparmor':
+    ensure => running,
+  }
+
   $apparmor_d = '/etc/apparmor.d'
   file { 'apparmor.d':
     ensure  => directory,
