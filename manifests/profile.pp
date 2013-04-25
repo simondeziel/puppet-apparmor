@@ -13,6 +13,10 @@
 #   Source path to the Apparmor profile. If unset (default), defaults to
 #   "${default_base}/${name}".
 #
+# [*local_only*]
+#   Boolean variable than can be true or false (default). If true, only the
+#   contents of the local profile will be managed.
+#
 # [*local_source*]
 #   Tri-state variable that can be true, false (default) or a source path to the
 #   local Apparmor profile. If true, uses "${default_base}/local/${name}" as the
@@ -52,6 +56,7 @@
 define apparmor::profile (
   $default_base = "puppet:///modules/apparmor/aa-profiles/${::lsbdistrelease}",
   $source       = undef,
+  $local_only   = false,
   $local_source = false,
   $post_cmd     = undef,
 ) {
@@ -59,7 +64,9 @@ define apparmor::profile (
   include apparmor
   $apparmor_d = $apparmor::apparmor_d
 
-  if $source {
+  if ($local_only == true) {
+    $real_source = undef
+  } elsif ($source) {
     $real_source = $source
   } else {
     $real_source = "${default_base}/${name}"
