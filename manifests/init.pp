@@ -24,7 +24,7 @@
 #
 # === Copyright
 #
-# Copyright 2012 Simon Deziel
+# Copyright 2012-2015 Simon Deziel
 #
 class apparmor {
 

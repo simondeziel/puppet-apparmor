@@ -51,7 +51,7 @@
 #
 # === Copyright
 #
-# Copyright 2012 Simon Deziel
+# Copyright 2012-2015 Simon Deziel
 #
 define apparmor::profile (
   $default_base = "puppet:///modules/apparmor/aa-profiles/${::lsbdistrelease}",
@@ -110,6 +110,7 @@ define apparmor::profile (
   exec { "aa-enable-${name}":
     command     => $command,
     path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+    onlyif      => 'aa-status --enabled',
     refreshonly => true,
   }
 }
