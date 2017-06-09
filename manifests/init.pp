@@ -26,22 +26,31 @@
 #
 # Copyright 2012-2015 Simon Deziel
 #
-class apparmor {
+class apparmor (
+  $package_ensure => 'installed',
+  $package_manage => true,
+  $service_ensure => 'running',
+  $service_manage => true,
+) {
 
-  package { 'apparmor':
-    ensure => present,
+  if $package_manage {
+    package { 'apparmor':
+      ensure => $package_ensure,
+    }
   }
 
-  service { 'apparmor':
-    ensure => running,
+  if $service_manage {
+    service { 'apparmor':
+      ensure => $service_ensure,
+    }
   }
 
   $apparmor_d = '/etc/apparmor.d'
   file { 'apparmor.d':
     ensure  => directory,
     path    => $apparmor_d,
-    owner   => 'root',
-    group   => 'root',
+    owner   => '0',
+    group   => '0',
     mode    => '0755',
     require => Package['apparmor'],
   }
@@ -49,8 +58,8 @@ class apparmor {
   file { 'apparmor.d.local':
     ensure  => directory,
     path    => "${apparmor_d}/local",
-    owner   => 'root',
-    group   => 'root',
+    owner   => '0',
+    group   => '0',
     mode    => '0755',
     require => Package['apparmor'],
   }
