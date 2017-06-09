@@ -24,13 +24,13 @@
 #
 # === Copyright
 #
-# Copyright 2012-2015 Simon Deziel
+# Copyright 2012-2017 Simon Deziel
 #
 class apparmor (
-  $package_ensure => 'installed',
-  $package_manage => true,
-  $service_ensure => 'running',
-  $service_manage => true,
+  $package_ensure = 'installed',
+  $package_manage = true,
+  $service_ensure = 'running',
+  $service_manage = true,
 ) {
 
   if $package_manage {
