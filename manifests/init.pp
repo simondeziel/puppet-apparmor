@@ -41,7 +41,8 @@ class apparmor (
 
   if $service_manage {
     service { 'apparmor':
-      ensure => $service_ensure,
+      ensure  => $service_ensure,
+      require => Package['apparmor'],
     }
   }
 
