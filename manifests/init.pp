@@ -37,11 +37,13 @@ class apparmor (
     package { 'apparmor':
       ensure => $package_ensure,
     }
+    Package['apparmor'] -> File['apparmor.d','apparmor.d.local']
   }
 
   if $service_manage {
     service { 'apparmor':
-      ensure => $service_ensure,
+      ensure  => $service_ensure,
+      require => File['apparmor.d','apparmor.d.local'],
     }
   }
 
@@ -52,7 +54,6 @@ class apparmor (
     owner   => '0',
     group   => '0',
     mode    => '0755',
-    require => Package['apparmor'],
   }
 
   file { 'apparmor.d.local':
@@ -61,6 +62,5 @@ class apparmor (
     owner   => '0',
     group   => '0',
     mode    => '0755',
-    require => Package['apparmor'],
   }
 }
