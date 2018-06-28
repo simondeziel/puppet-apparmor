@@ -34,9 +34,7 @@ class apparmor (
 ) {
 
   if $package_manage {
-    package { 'apparmor':
-      ensure => $package_ensure,
-    }
+    ensure_resource('package', 'apparmor', { 'ensure' => $package_ensure, })
     Package['apparmor'] -> File['apparmor.d','apparmor.d.local']
   }
 
