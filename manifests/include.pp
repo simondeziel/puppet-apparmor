@@ -34,8 +34,8 @@
 # Copyright 2012-2018 Simon Deziel
 #
 define apparmor::include (
-  $default_base = $apparmor::profile_default_base,
-  $source       = undef,
+  Optional[String] $default_base = $apparmor::profile_default_base,
+  Optional[String] $source       = undef,
 ) {
 
   include apparmor

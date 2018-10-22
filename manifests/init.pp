@@ -27,11 +27,11 @@
 # Copyright 2012-2018 Simon Deziel
 #
 class apparmor (
-  $package_ensure       = 'installed',
-  $package_manage       = true,
-  $service_ensure       = 'running',
-  $service_manage       = true,
-  $profile_default_base = "puppet:///modules/apparmor/aa-profiles/${::lsbdistrelease}",
+  String $package_ensure       = 'installed',
+  Boolean $package_manage      = true,
+  String $service_ensure       = 'running',
+  Boolean $service_manage      = true,
+  String $profile_default_base = "puppet:///modules/apparmor/aa-profiles/${::lsbdistrelease}",
 ) {
 
   if $package_manage {
