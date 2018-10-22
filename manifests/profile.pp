@@ -54,7 +54,7 @@
 # Copyright 2012-2017 Simon Deziel
 #
 define apparmor::profile (
-  $default_base = "puppet:///modules/apparmor/aa-profiles/${::lsbdistrelease}",
+  $default_base = $apparmor::profile_default_base,
   $source       = undef,
   $local_only   = false,
   $local_source = false,
