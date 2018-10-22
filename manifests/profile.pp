@@ -47,11 +47,11 @@
 #
 # === Authors
 #
-# Simon Deziel <simon.deziel@gmail.com>
+# Simon Deziel <simon@sdeziel.info>
 #
 # === Copyright
 #
-# Copyright 2012-2017 Simon Deziel
+# Copyright 2012-2018 Simon Deziel
 #
 define apparmor::profile (
   $default_base = $apparmor::profile_default_base,

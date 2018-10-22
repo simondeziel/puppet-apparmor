@@ -20,11 +20,11 @@
 #
 # === Authors
 #
-# Simon Deziel <simon.deziel@gmail.com>
+# Simon Deziel <simon@sdeziel.info>
 #
 # === Copyright
 #
-# Copyright 2012-2017 Simon Deziel
+# Copyright 2012-2018 Simon Deziel
 #
 class apparmor (
   $package_ensure       = 'installed',
