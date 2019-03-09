@@ -27,7 +27,6 @@
 # Copyright 2012-2019 Simon Deziel
 #
 class apparmor (
-  String  $package_ensure       = 'installed',
   Boolean $package_manage       = true,
   String  $service_ensure       = 'running',
   Boolean $service_manage       = true,
@@ -36,7 +35,7 @@ class apparmor (
 ) {
 
   if $package_manage {
-    ensure_resource('package', 'apparmor', { 'ensure' => $package_ensure, })
+    ensure_packages('apparmor')
     Package['apparmor'] -> File['apparmor.d','apparmor.d.local']
   }
 
