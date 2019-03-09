@@ -24,14 +24,15 @@
 #
 # === Copyright
 #
-# Copyright 2012-2018 Simon Deziel
+# Copyright 2012-2019 Simon Deziel
 #
 class apparmor (
-  String $package_ensure       = 'installed',
-  Boolean $package_manage      = true,
-  String $service_ensure       = 'running',
-  Boolean $service_manage      = true,
-  String $profile_default_base = "puppet:///modules/apparmor/aa-profiles/${::lsbdistrelease}",
+  String  $package_ensure       = 'installed',
+  Boolean $package_manage       = true,
+  String  $service_ensure       = 'running',
+  Boolean $service_manage       = true,
+  String  $profile_default_base = "puppet:///modules/apparmor/aa-profiles/${::lsbdistrelease}",
+  Hash    $profiles             = {},
 ) {
 
   if $package_manage {
@@ -48,18 +49,20 @@ class apparmor (
 
   $apparmor_d = '/etc/apparmor.d'
   file { 'apparmor.d':
-    ensure  => directory,
-    path    => $apparmor_d,
-    owner   => '0',
-    group   => '0',
-    mode    => '0755',
+    ensure => directory,
+    path   => $apparmor_d,
+    owner  => '0',
+    group  => '0',
+    mode   => '0755',
   }
 
   file { 'apparmor.d.local':
-    ensure  => directory,
-    path    => "${apparmor_d}/local",
-    owner   => '0',
-    group   => '0',
-    mode    => '0755',
+    ensure => directory,
+    path   => "${apparmor_d}/local",
+    owner  => '0',
+    group  => '0',
+    mode   => '0755',
   }
+
+  create_resources('apparmor::profile',$profiles)
 }
