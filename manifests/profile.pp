@@ -51,14 +51,14 @@
 #
 # === Copyright
 #
-# Copyright 2012-2018 Simon Deziel
+# Copyright 2012-2019 Simon Deziel
 #
 define apparmor::profile (
-  Optional[String] $default_base        = $apparmor::profile_default_base,
-  Optional[String] $source              = undef,
-  Boolean $local_only                   = false,
+  Optional[String]        $default_base = $apparmor::profile_default_base,
+  Optional[String]        $source       = undef,
+  Boolean                 $local_only   = false,
   Variant[Boolean,String] $local_source = false,
-  Optional[String] $post_cmd            = undef,
+  Optional[String]        $post_cmd     = undef,
 ) {
 
   include apparmor
