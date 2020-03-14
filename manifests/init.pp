@@ -24,7 +24,7 @@
 #
 # === Copyright
 #
-# Copyright 2012-2019 Simon Deziel
+# Copyright 2012-2020 Simon Deziel
 #
 class apparmor (
   Boolean $package_manage       = true,
@@ -50,16 +50,16 @@ class apparmor (
   file { 'apparmor.d':
     ensure => directory,
     path   => $apparmor_d,
-    owner  => '0',
-    group  => '0',
+    owner  => 0,
+    group  => 0,
     mode   => '0755',
   }
 
   file { 'apparmor.d.local':
     ensure => directory,
     path   => "${apparmor_d}/local",
-    owner  => '0',
-    group  => '0',
+    owner  => 0,
+    group  => 0,
     mode   => '0755',
   }
 
