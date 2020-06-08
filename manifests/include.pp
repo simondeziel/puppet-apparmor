@@ -31,23 +31,27 @@
 #
 # === Copyright
 #
-# Copyright 2012-2018 Simon Deziel
+# Copyright 2012-2020 Simon Deziel
 #
 define apparmor::include (
   Optional[String] $default_base = $apparmor::profile_default_base,
+  Optional[String] $content      = undef,
   Optional[String] $source       = undef,
 ) {
 
   include apparmor
   $apparmor_d = $apparmor::apparmor_d
 
-  if ($source) {
+  if $source {
     $real_source = $source
+  } elsif $content {
+    $real_source = undef
   } else {
     $real_source = "${default_base}/${name}"
   }
 
   file { "${apparmor_d}/${name}":
-    source => $real_source,
+    content => $content,
+    source  => $real_source,
   }
 }
