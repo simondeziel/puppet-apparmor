@@ -13,14 +13,12 @@
 #  Default path to use with $source and $local_source. If unset (default),
 #  defaults to a distro specific path.
 #
+# [*content*]
+#   Optional content of the Apparmor profile.
+#
 # [*source*]
-#   Source path to the Apparmor profile. If unset (default), defaults to
-#   "${default_base}/${name}".
-#
-# === Variables
-#
-# [*lsbdistrelease*]
-#   The LSB distribution release number (normally provided as a fact).
+#   Optional source path to the Apparmor profile. If unset (default), defaults
+#   to "${default_base}/${name}".
 #
 # === Examples
 #
@@ -48,6 +46,10 @@ define apparmor::include (
 
   include apparmor
   $apparmor_d = $apparmor::apparmor_d
+
+  if $source and $content {
+    fail('apparmor::include: source and content parameter cannot be used at the same time')
+  }
 
   if $source {
     $real_source = $source
