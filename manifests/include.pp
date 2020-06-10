@@ -5,6 +5,10 @@
 #
 # === Parameters
 #
+# [*ensure*]
+#  Enum variable that can be present (default) or absent to control the presence
+#  of the include file.
+#
 # [*default_base*]
 #  Default path to use with $source and $local_source. If unset (default),
 #  defaults to a distro specific path.
@@ -34,6 +38,9 @@
 # Copyright 2012-2020 Simon Deziel
 #
 define apparmor::include (
+  Enum[
+    'absent',
+    'present']     $ensure       = 'present',
   Optional[String] $default_base = $apparmor::profile_default_base,
   Optional[String] $content      = undef,
   Optional[String] $source       = undef,
@@ -51,6 +58,7 @@ define apparmor::include (
   }
 
   file { "${apparmor_d}/${name}":
+    ensure  => $ensure,
     content => $content,
     source  => $real_source,
   }
