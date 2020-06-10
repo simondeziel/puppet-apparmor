@@ -22,6 +22,10 @@
 #   Boolean variable than can be true or false (default). If true, only the
 #   contents of the local profile will be managed.
 #
+# [*local_content*]
+#   Optional content to put in the local Apparmor profile file. Cannot be used
+#   with local_source set non-false.
+#
 # [*local_source*]
 #   Tri-state variable that can be true, false (default) or a source path to the
 #   local Apparmor profile. If true, uses "${default_base}/local/${name}" as the
@@ -56,24 +60,29 @@
 #
 # === Copyright
 #
-# Copyright 2012-2019 Simon Deziel
+# Copyright 2012-2020 Simon Deziel
 #
 define apparmor::profile (
   Enum[
-   'absent',
-   'present',
-   'disable']             $ensure       = 'present',
-  Optional[String]        $default_base = $apparmor::profile_default_base,
-  Optional[String]        $source       = undef,
-  Boolean                 $local_only   = false,
-  Variant[Boolean,String] $local_source = false,
-  Optional[String]        $post_cmd     = undef,
+    'absent',
+    'present',
+    'disable']            $ensure        = 'present',
+  Optional[String]        $default_base  = $apparmor::profile_default_base,
+  Optional[String]        $source        = undef,
+  Boolean                 $local_only    = false,
+  Optional[String]        $local_content = undef,
+  Variant[Boolean,String] $local_source  = false,
+  Optional[String]        $post_cmd      = undef,
 ) {
 
   include apparmor
   $apparmor_d = $apparmor::apparmor_d
 
   if $ensure == 'present' {
+    if $local_source and $local_content {
+      fail('apparmor::profile: local_source has to be set to false to use local_content')
+    }
+
     if $local_only {
       $real_source = undef
     } elsif $source {
@@ -101,13 +110,14 @@ define apparmor::profile (
       $real_local_source = $local_source
     }
 
-    if $real_local_source {
+    if $real_local_source or $local_content {
       file { "${apparmor_d}/local/${name}":
-        source => $real_local_source,
-        notify => Exec["aa-enable-${name}"],
+        content => $local_content,
+        source  => $real_local_source,
+        notify  => Exec["aa-enable-${name}"],
         # Make sure the local profile is installed first to avoid
         # calling apparmor_parser without the local profile.
-        before => File["${apparmor_d}/${name}"],
+        before  => File["${apparmor_d}/${name}"],
       }
     }
 
