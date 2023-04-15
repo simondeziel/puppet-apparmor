@@ -22,7 +22,7 @@
 #
 # === Examples
 #
-# apparmor::profile { 'abstractions/libpam-systemd':
+# apparmor::include { 'abstractions/libpam-systemd':
 #   source => 'puppet:///modules/bar/abstractions/libpam-systemd',
 #   notify => Exec['aa-enable-usr.bin.bar'],
 # }
