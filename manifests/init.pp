@@ -30,7 +30,7 @@ class apparmor (
   Boolean $package_manage       = true,
   String  $service_ensure       = 'running',
   Boolean $service_manage       = true,
-  String  $profile_default_base = "puppet:///modules/apparmor/aa-profiles/${::lsbdistrelease}",
+  String  $profile_default_base = "puppet:///modules/apparmor/aa-profiles/${facts['os']['distro']['release']['full']}",
   Hash    $profiles             = {},
 ) {
 
