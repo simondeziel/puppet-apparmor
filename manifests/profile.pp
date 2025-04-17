@@ -15,8 +15,13 @@
 #  defaults to a distro specific path.
 #
 # [*source*]
-#   Source path to the Apparmor profile. If unset (default), defaults to
+#   Tri-state variable that can be true, false (default) or a source path to the
+#   Apparmor profile. If undef, defaults to
 #   "${default_base}/${name}".
+#
+# [*content*]
+#   Optional content to put in the Apparmor profile file. Cannot be used with
+#   source set non-false.
 #
 # [*local_only*]
 #   Boolean variable than can be true or false (default). If true, only the
@@ -68,7 +73,8 @@ define apparmor::profile (
     'present',
     'disable']            $ensure        = 'present',
   Optional[String]        $default_base  = $apparmor::profile_default_base,
-  Optional[String]        $source        = undef,
+  Variant[Boolean,String] $source        = false,
+  Optional[String]        $content       = undef,
   Boolean                 $local_only    = false,
   Optional[String]        $local_content = undef,
   Variant[Boolean,String] $local_source  = false,
@@ -79,21 +85,31 @@ define apparmor::profile (
   $apparmor_d = $apparmor::apparmor_d
 
   if $ensure == 'present' {
+    if $source and $content {
+      fail('apparmor::profile: source has to be set to false to use content')
+    }
     if $local_source and $local_content {
       fail('apparmor::profile: local_source has to be set to false to use local_content')
     }
 
     if $local_only {
       $real_source = undef
+      $real_content = undef
     } elsif $source {
       $real_source = $source
+      $real_content = undef
+    } elsif $content {
+      $real_source = undef
+      $real_content = $content
     } else {
       $real_source = "${default_base}/${name}"
+      $real_content = undef
     }
 
     file { "${apparmor_d}/${name}":
-      source => $real_source,
-      notify => Exec["aa-enable-${name}"],
+      source  => $real_source,
+      content => $real_content,
+      notify  => Exec["aa-enable-${name}"],
     }
 
     # Remove the "disable" symlink if any
